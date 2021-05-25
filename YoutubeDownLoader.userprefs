@@ -1,0 +1,39 @@
+﻿<Properties StartupItem="YoutubeDownLoader/YoutubeDownLoader.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="YoutubeDownLoader/Loaders/Decipherer.cs">
+    <Files>
+      <File FileName="YoutubeDownLoader/Loaders/YoutubeLoader.cs" Line="63" Column="47" />
+      <File FileName="YoutubeDownLoader/Constants/VideoInfoCONST.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Program.cs" Line="26" Column="4" />
+      <File FileName="YoutubeDownLoader/Utilities/VideoInfo.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Loaders/DownloadUrlResolver.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Loaders/Decipherer.cs" Line="147" Column="46" />
+      <File FileName="YoutubeDownLoader/Utilities/HttpHelpers.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="YoutubeDownLoader" expanded="True">
+            <Node name="YoutubeDownLoader" expanded="True">
+              <Node name="Constants" expanded="True" />
+              <Node name="Loaders" expanded="True">
+                <Node name="Decipherer.cs" selected="True" />
+              </Node>
+              <Node name="Utilities" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/guidoleen/Projects/YoutubeDownLoader/YoutubeDownLoader/Loaders/YoutubeLoader.cs" line="54" column="1" />
+      <Breakpoint file="/Users/guidoleen/Projects/YoutubeDownLoader/YoutubeDownLoader/Loaders/YoutubeLoader.cs" line="1" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
