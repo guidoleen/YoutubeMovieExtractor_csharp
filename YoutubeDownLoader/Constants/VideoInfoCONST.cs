@@ -5,6 +5,8 @@ namespace YoutubeDownLoader
 {
 	public static class VideoInfoCONST
 	{
+		public const string VideoInfoNameSeperator = "_";
+
 		public const string RegexExtractPlayerJsSrc = @"(""jsUrl"":"")(.*?)("",)"; // @"(\""jsUrl\"":"")(.*)(\.js"",)"; // From html source
 		public const string RegexExtractRawUrl = @"(""probeUrl"":"")(.*)(,)"; // From video_info
 

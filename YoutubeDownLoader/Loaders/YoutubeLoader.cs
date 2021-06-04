@@ -10,66 +10,36 @@ namespace YoutubeDownLoader
 		public void WriteYoutubeMovieToDisk(string url)
 		{
 			// Download video’s default page (e.g. https://www.youtube.com/watch?v=NWY7ZRACbUU).
-			var loadedRawHtmlData = this.LoadDataFromUrl (url);
-			if (loadedRawHtmlData == null) return;
-			var loadedRawStringData = System.Text.Encoding.UTF8.GetString(loadedRawHtmlData);
-			Console.WriteLine (loadedRawStringData);
+			var loadedRawHtmlData = YoutubeStreamDownloader.LoadDataFromUrl (url);
+			if (loadedRawHtmlData == null)
+				return;
+			var loadedRawHtmlStringData = System.Text.Encoding.UTF8.GetString (loadedRawHtmlData);
+// Console.WriteLine (loadedRawStringData);
 
 			// Extract player source URL from "jsUrl" (e.g. https://www.youtube.com/yts/jsbin/player-vflYXLM5n/en_US/base.js).
-			var extractedPlayerSource = this.ExtractedPlayerSource(loadedRawStringData); // >> OldStuff >> VideoInfoCONST.YoutubeEmbedPlayerJsUrl; // >> OLD STUFF >> ExtractedPlayerSource(loadedRawEmbedStringData);
+			var extractedPlayerSource = this.ExtractedPlayerSource (loadedRawHtmlStringData); // >> OldStuff >> VideoInfoCONST.YoutubeEmbedPlayerJsUrl; // >> OLD STUFF >> ExtractedPlayerSource(loadedRawEmbedStringData);
 
 			// Download and parse player source code.
-			var loadedJsData = System.Text.Encoding.UTF8.GetString (this.LoadDataFromUrl(extractedPlayerSource));
+			var loadedJsData = System.Text.Encoding.UTF8.GetString (YoutubeStreamDownloader.LoadDataFromUrl (extractedPlayerSource));
 
 			// Request video metadata (e.g. https://www.youtube.com/get_video_info?video_id=e_S9VvJM1PI&sts=17488&hl=en). Try with el=detailpage if it fails.
-			var loadedVideoInfoData = this.LoadDataFromUrl (this.FetchFileFromUrl(url, VideoInfoCONST.YoutubeVideoInfoUrl));
-			if (loadedVideoInfoData == null) return;
+			var loadedVideoInfoData = YoutubeStreamDownloader.LoadDataFromUrl (this.FetchFileFromUrl (url, VideoInfoCONST.YoutubeVideoInfoUrl));
+			if (loadedVideoInfoData == null)
+				return;
 			var loadedVideoInfoStringData = System.Text.Encoding.UTF8.GetString (loadedVideoInfoData);
 			this.Utf8CharEncoding (ref loadedVideoInfoStringData);
 
 			// Create VideoInfo
-			var videoInfos = this.CreateVideoInfos(loadedVideoInfoStringData);
+			var videoInfos = this.CreateVideoInfos (loadedVideoInfoStringData);
 
-			var deciphered = Decipherer.DecipherWithJsPlayer (loadedJsData, videoInfos [0].Signatures [0]);
+			// Get deciphered signature(s)
+			var decipheredSignatures = Decipherer.DecipherWithJsPlayer (loadedJsData, videoInfos [0].Signatures);
 
-			// Get the value of sts (e.g. 17488).
+			// First update the deciphered signatures in the videoInfo objects
+			this.UpdateVideoInfosSignatures(videoInfos, decipheredSignatures);
 
-
-
-Console.WriteLine ("NEWLINE - \r\n");
-
-// Console.WriteLine (loadedVideoInfoStringData);
-
-			// Parse the URL-encoded metadata and extract information about streams.
-
-			// If they have signatures, use the player source to decipher them and update the URLs.
-
-
-			// >> If there’s a reference to DASH manifest, extract the URL and decipher it if necessary as well.
-			// >> Download the DASH manifest and extract additional streams.
-
-			// Use itag to classify streams by their properties.
-
-			// Choose a stream and download it in segments.
-		}
-
-		// Load from url
-		private byte[] LoadDataFromUrl(string url)
-		{
-			byte[] html = null;
-
-			try
-			{
-				using(WebClient client = new WebClient ())
-				{
-					string htmlValue = client.DownloadString(new Uri(url));
-					html = System.Text.Encoding.UTF8.GetBytes(htmlValue);
-				}
-			}
-			catch(Exception e) {
-				return null;
-			}
-			return html;
+			// Choose a stream from an itag (eg. 22), download it and save it's data to disk.
+			this.DownloadYoutubeStreamToDisk(videoInfos[1], @"/Users/guidoleen/Desktop/WegNaGebruik/Downloads");
 		}
 
 		// Get fileinfo from eg. VideoInfo
@@ -141,6 +111,7 @@ Console.WriteLine ("NEWLINE - \r\n");
 			var videoInfoItag = new HttpHelpers ().ParseJsonProperties (new HttpHelpers ().RemoveCharacter (extractedGeneralVideoInfo, '\\'), "\"itag\"");
 			var videoInfoMimeType = new HttpHelpers ().ParseJsonProperties (new HttpHelpers ().RemoveCharacter (extractedGeneralVideoInfo, '\\'), "\"mimeType\"");
 			var videoInfoUrl = new HttpHelpers ().ParseJsonProperties (new HttpHelpers ().RemoveCharacter (extractedGeneralVideoInfo, '\\'), "\"url\"");
+			var videoInfoId = new HttpHelpers ().ParseJsonProperties (new HttpHelpers ().RemoveCharacter (extractedGeneralVideoInfo, '\\'), "\"videoId\"");
 			var videoInfoSignatures = this.ExtractedSignatures (extractedGeneralVideoInfo);
 
 			var videoInfos = new VideoInfo[videoInfoItag.Length];
@@ -149,15 +120,55 @@ Console.WriteLine ("NEWLINE - \r\n");
 					itag: videoInfoItag[i] != "" ? Int32.Parse(videoInfoItag[i]) : 0,
 					mimeType: videoInfoMimeType[i],
 					urls: new string[]{videoInfoUrl[i]},
+					videoId: videoInfoId[i],
 					signatures: videoInfoSignatures
 				);
 			}
 			return videoInfos;
 		}
 
+		// Update videoInfo (deciphered signature)
+		private void UpdateVideoInfosSignatures(VideoInfo[] videoInfos, string[] decipheredSignatures)
+		{
+			foreach (var videoInfo in videoInfos) {
+				videoInfo.Signatures = decipheredSignatures;
+			}
+		}
+
 		// Fetch movie data
+		private byte[] FetchRawMovieDataFromVideoInfo(VideoInfo videoInfo)
+		{
+			// Get Encoded Url from videoInfo
+			var urlVideoStreamUrl = videoInfo.StreamUrl;
+			this.Utf8CharEncoding (ref urlVideoStreamUrl);
+
+			urlVideoStreamUrl = urlVideoStreamUrl + "&signature="; 
+
+			foreach (var videoInfoSignature in videoInfo.Signatures) {
+				var loadedDataFromUrl = YoutubeStreamDownloader.LoadDataFromUrl (urlVideoStreamUrl + videoInfoSignature);
+				if (loadedDataFromUrl != null)
+					return loadedDataFromUrl;
+			}
+
+			return null;
+		}
 
 		// Write movie data to disk
+		private void WriteYoutubeDataToDisk(byte[] downloadedStream, string directory, string fileName)
+		{
+			YoutubeStreamDownloader.SaveStreamToDisk (downloadedStream, directory, fileName);
+		}
+
+		// Download Movie to Disk
+		private void DownloadYoutubeStreamToDisk(VideoInfo videoInfo, string directory)
+		{
+			var data = this.FetchRawMovieDataFromVideoInfo(videoInfo);
+
+			if(data == null) 
+				throw new Exception ("Could not download this Youtube movie.");
+			
+			this.WriteYoutubeDataToDisk (data, directory, videoInfo.VideoNameFromId);
+		}
 	}
 }
 
@@ -166,3 +177,8 @@ Console.WriteLine ("NEWLINE - \r\n");
 //var loadedRawEmbedHtmlData = this.LoadDataFromUrl (this.FetchFileFromUrl(url, VideoInfoCONST.YoutubeEmbedUrl));
 //var loadedRawEmbedStringData = System.Text.Encoding.UTF8.GetString(loadedRawEmbedHtmlData);
 //Console.WriteLine (loadedRawEmbedStringData);
+
+// >> If there’s a reference to DASH manifest, extract the URL and decipher it if necessary as well.
+// >> Download the DASH manifest and extract additional streams.
+
+// Use itag to classify streams by their properties.

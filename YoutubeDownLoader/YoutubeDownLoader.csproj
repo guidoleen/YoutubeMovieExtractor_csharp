@@ -39,8 +39,8 @@
     <Compile Include="Utilities\VideoInfo.cs" />
     <Compile Include="Constants\VideoInfoCONST.cs" />
     <Compile Include="Loaders\Decipherer.cs" />
-    <Compile Include="Loaders\DownloadUrlResolver.cs" />
     <Compile Include="Utilities\HttpHelpers.cs" />
+    <Compile Include="Loaders\YoutubeStreamDownloader.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

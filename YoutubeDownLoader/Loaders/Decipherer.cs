@@ -8,7 +8,7 @@ namespace YoutubeDownLoader
 {
 	internal static class Decipherer
 	{
-		public static string DecipherWithJsPlayer(string jsPlayerSrc, string signature)
+		public static string[] DecipherWithJsPlayer(string jsPlayerSrc, string[] signatures)
 		{
 			// Find the name of the function that handles deciphering
 			var deciperFunctionName = GetInitialFunctionDecipherName(jsPlayerSrc);
@@ -24,7 +24,12 @@ namespace YoutubeDownLoader
 				throw new Exception ("Could not find and map the js functions to the C# equivalent.");
 
 			// Execute the Mapped C# equivalent
-			return DecipherOnMappedFunctions(mappedJsFunctions, signature).ToString();
+			var deciperedSignatures = new string[signatures.Length];
+
+			for (int i = 0; i < deciperedSignatures.Length; i++) {
+				deciperedSignatures[i] = DecipherOnMappedFunctions(mappedJsFunctions, signatures[i]).ToString();
+			}
+			return deciperedSignatures;
 		}
 
 		// 1) Get initial function name for the js function sequence. Name eg. wy or encodeURIComponent

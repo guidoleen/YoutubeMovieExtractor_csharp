@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="YoutubeDownLoader/YoutubeDownLoader.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="YoutubeDownLoader/Loaders/Decipherer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="YoutubeDownLoader/Loaders/YoutubeLoader.cs">
     <Files>
-      <File FileName="YoutubeDownLoader/Loaders/YoutubeLoader.cs" Line="63" Column="47" />
-      <File FileName="YoutubeDownLoader/Constants/VideoInfoCONST.cs" Line="1" Column="1" />
-      <File FileName="YoutubeDownLoader/Program.cs" Line="26" Column="4" />
-      <File FileName="YoutubeDownLoader/Utilities/VideoInfo.cs" Line="1" Column="1" />
-      <File FileName="YoutubeDownLoader/Loaders/DownloadUrlResolver.cs" Line="1" Column="1" />
-      <File FileName="YoutubeDownLoader/Loaders/Decipherer.cs" Line="147" Column="46" />
+      <File FileName="YoutubeDownLoader/Loaders/YoutubeLoader.cs" Line="170" Column="77" />
+      <File FileName="YoutubeDownLoader/Constants/VideoInfoCONST.cs" Line="8" Column="34" />
+      <File FileName="YoutubeDownLoader/Program.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Utilities/VideoInfo.cs" Line="34" Column="37" />
+      <File FileName="YoutubeDownLoader/Loaders/Decipherer.cs" Line="24" Column="5" />
       <File FileName="YoutubeDownLoader/Utilities/HttpHelpers.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Loaders/YoutubeStreamDownloader.cs" Line="44" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -17,7 +17,7 @@
             <Node name="YoutubeDownLoader" expanded="True">
               <Node name="Constants" expanded="True" />
               <Node name="Loaders" expanded="True">
-                <Node name="Decipherer.cs" selected="True" />
+                <Node name="YoutubeLoader.cs" selected="True" />
               </Node>
               <Node name="Utilities" expanded="True" />
             </Node>
