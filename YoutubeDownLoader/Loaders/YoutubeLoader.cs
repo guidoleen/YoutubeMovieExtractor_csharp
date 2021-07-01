@@ -14,7 +14,6 @@ namespace YoutubeDownLoader
 			if (loadedRawHtmlData == null)
 				return;
 			var loadedRawHtmlStringData = System.Text.Encoding.UTF8.GetString (loadedRawHtmlData);
-// Console.WriteLine (loadedRawStringData);
 
 			// Extract player source URL from "jsUrl" (e.g. https://www.youtube.com/yts/jsbin/player-vflYXLM5n/en_US/base.js).
 			var extractedPlayerSource = this.ExtractedPlayerSource (loadedRawHtmlStringData); // >> OldStuff >> VideoInfoCONST.YoutubeEmbedPlayerJsUrl; // >> OLD STUFF >> ExtractedPlayerSource(loadedRawEmbedStringData);
@@ -24,6 +23,7 @@ namespace YoutubeDownLoader
 
 			// Request video metadata (e.g. https://www.youtube.com/get_video_info?video_id=e_S9VvJM1PI&sts=17488&hl=en). Try with el=detailpage if it fails.
 			var loadedVideoInfoData = YoutubeStreamDownloader.LoadDataFromUrl (this.FetchFileFromUrl (url, VideoInfoCONST.YoutubeVideoInfoUrl));
+
 			if (loadedVideoInfoData == null)
 				return;
 			var loadedVideoInfoStringData = System.Text.Encoding.UTF8.GetString (loadedVideoInfoData);
@@ -40,6 +40,7 @@ namespace YoutubeDownLoader
 
 			// Choose a stream from an itag (eg. 22), download it and save it's data to disk.
 			this.DownloadYoutubeStreamToDisk(videoInfos[1], @"/Users/guidoleen/Desktop/WegNaGebruik/Downloads");
+
 		}
 
 		// Get fileinfo from eg. VideoInfo
@@ -117,13 +118,14 @@ namespace YoutubeDownLoader
 			var videoInfos = new VideoInfo[videoInfoItag.Length];
 			for (int i = 0; i < videoInfoItag.Length; i++) {
 				videoInfos[i] = new VideoInfo (
-					itag: videoInfoItag[i] != "" ? Int32.Parse(videoInfoItag[i]) : 0,
+					itag: (!String.IsNullOrEmpty(videoInfoItag[i])) ? Int32.Parse(videoInfoItag[i]) : 0,
 					mimeType: videoInfoMimeType[i],
 					urls: new string[]{videoInfoUrl[i]},
-					videoId: videoInfoId[i],
+					videoId: videoInfoId[0], // Can have more id's. Get the first id which is the id from the desired movie. 
 					signatures: videoInfoSignatures
 				);
 			}
+
 			return videoInfos;
 		}
 
@@ -142,7 +144,7 @@ namespace YoutubeDownLoader
 			var urlVideoStreamUrl = videoInfo.StreamUrl;
 			this.Utf8CharEncoding (ref urlVideoStreamUrl);
 
-			urlVideoStreamUrl = urlVideoStreamUrl + "&signature="; 
+			urlVideoStreamUrl = new HttpHelpers().RemoveCharacter(urlVideoStreamUrl, '"') + "&sig="; 
 
 			foreach (var videoInfoSignature in videoInfo.Signatures) {
 				var loadedDataFromUrl = YoutubeStreamDownloader.LoadDataFromUrl (urlVideoStreamUrl + videoInfoSignature);

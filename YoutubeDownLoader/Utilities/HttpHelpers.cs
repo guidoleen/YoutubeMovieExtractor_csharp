@@ -26,6 +26,9 @@ namespace YoutubeDownLoader
 			StringBuilder output = new StringBuilder();
 			for (int i = 0; i < input.Length; i++) {
 				if(input[i] == character) i++;
+				if (i >= input.Length)
+					break;
+				
 				output.Append (input [i]);
 			}
 			return output.ToString ();

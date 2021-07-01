@@ -21,7 +21,7 @@ namespace YoutubeDownLoader
 		public const string Ogg = ".ogg";
 
 		public const string YoutubeUrl = @"https://www.youtube.com/";
-		private const string VideoInfoUrlPart = @"get_video_info?html5=1&video_id=";
+		private const string VideoInfoUrlPart = @"get_video_info?html5=1&c=TVHTML5&cver=6.20180913&video_id="; // @"get_video_info?html5=1&video_id=" // Old stuff - Deprecated
 
 		public const string YoutubeVideoInfoUrl = YoutubeUrl + VideoInfoUrlPart;
 
