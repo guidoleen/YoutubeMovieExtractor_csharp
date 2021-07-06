@@ -21,6 +21,3 @@ namespace YoutubeDownLoader
 		}
 	}
 }
-
-// https://www.youtube.com/watch?v=8LKXQvvEOXE
-// https://www.youtube.com/watch?v=uuPQZ0zhlPs

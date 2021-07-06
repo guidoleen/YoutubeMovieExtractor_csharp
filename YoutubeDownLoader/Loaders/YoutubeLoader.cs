@@ -173,14 +173,3 @@ namespace YoutubeDownLoader
 		}
 	}
 }
-
-//////// OLD STUFF /////////
-// Download video’s embed page (e.g. https://www.youtube.com/embed/e_S9VvJM1PI).
-//var loadedRawEmbedHtmlData = this.LoadDataFromUrl (this.FetchFileFromUrl(url, VideoInfoCONST.YoutubeEmbedUrl));
-//var loadedRawEmbedStringData = System.Text.Encoding.UTF8.GetString(loadedRawEmbedHtmlData);
-//Console.WriteLine (loadedRawEmbedStringData);
-
-// >> If there’s a reference to DASH manifest, extract the URL and decipher it if necessary as well.
-// >> Download the DASH manifest and extract additional streams.
-
-// Use itag to classify streams by their properties.
