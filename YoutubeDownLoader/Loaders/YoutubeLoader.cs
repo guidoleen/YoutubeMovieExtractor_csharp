@@ -137,8 +137,8 @@ namespace YoutubeDownLoader
 			}
 		}
 
-		// Fetch movie data
-		private byte[] FetchRawMovieDataFromVideoInfo(VideoInfo videoInfo)
+		// Get Encoded Videoinfo
+		private string GetVideoStreamUrl(VideoInfo videoInfo)
 		{
 			// Get Encoded Url from videoInfo
 			var urlVideoStreamUrl = videoInfo.StreamUrl;
@@ -146,8 +146,15 @@ namespace YoutubeDownLoader
 
 			urlVideoStreamUrl = new HttpHelpers().RemoveCharacter(urlVideoStreamUrl, '"') + "&sig="; 
 
+			return urlVideoStreamUrl;
+		}
+
+		// REGULAR DATA STREAM
+		// Fetch movie data without chunk
+		private byte[] FetchRawMovieDataFromVideoInfo(VideoInfo videoInfo)
+		{
 			foreach (var videoInfoSignature in videoInfo.Signatures) {
-				var loadedDataFromUrl = YoutubeStreamDownloader.LoadDataFromUrl (urlVideoStreamUrl + videoInfoSignature);
+				var loadedDataFromUrl = YoutubeStreamDownloader.LoadDataFromUrl (this.GetVideoStreamUrl(videoInfo) + videoInfoSignature);
 				if (loadedDataFromUrl != null)
 					return loadedDataFromUrl;
 			}
@@ -170,6 +177,23 @@ namespace YoutubeDownLoader
 				throw new Exception ("Could not download this Youtube movie.");
 			
 			this.WriteYoutubeDataToDisk (data, directory, videoInfo.VideoNameFromId);
+		}
+
+		// CHUNKED DATA STREAM
+		// Fetch and write movie data to disk
+		private void WriteYoutubeChunkedDataToDisk(string url, string directory, string fileName)
+		{
+			YoutubeStreamDownloader.LoadAndSaveChunkedDataFromUrl (url, directory, fileName);
+		}
+
+		// Download chunked Movie to Disk
+		private void DownloadYoutubeChunkedStreamToDisk(VideoInfo videoInfo, string directory)
+		{
+			foreach (var videoInfoSignature in videoInfo.Signatures) 
+			{
+				if (YoutubeStreamDownloader.LoadAndSaveChunkedDataFromUrl(this.GetVideoStreamUrl(videoInfo) + videoInfoSignature, directory, videoInfo.VideoNameFromId))
+					return;
+			}
 		}
 	}
 }

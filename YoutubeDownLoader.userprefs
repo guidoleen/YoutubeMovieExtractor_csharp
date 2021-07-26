@@ -2,22 +2,22 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
   <MonoDevelop.Ide.Workbench ActiveDocument="YoutubeDownLoader/Loaders/YoutubeLoader.cs">
     <Files>
-      <File FileName="YoutubeDownLoader/Loaders/YoutubeLoader.cs" Line="44" Column="4" />
-      <File FileName="YoutubeDownLoader/Constants/VideoInfoCONST.cs" Line="24" Column="103" />
-      <File FileName="YoutubeDownLoader/Program.cs" Line="21" Column="4" />
-      <File FileName="YoutubeDownLoader/Utilities/VideoInfo.cs" Line="34" Column="37" />
-      <File FileName="YoutubeDownLoader/Loaders/Decipherer.cs" Line="115" Column="76" />
-      <File FileName="YoutubeDownLoader/Utilities/HttpHelpers.cs" Line="31" Column="5" />
-      <File FileName="YoutubeDownLoader/Loaders/YoutubeStreamDownloader.cs" Line="22" Column="24" />
+      <File FileName="YoutubeDownLoader/Loaders/YoutubeLoader.cs" Line="177" Column="3" />
+      <File FileName="YoutubeDownLoader/Constants/VideoInfoCONST.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Program.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Utilities/VideoInfo.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Loaders/Decipherer.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Utilities/HttpHelpers.cs" Line="1" Column="1" />
+      <File FileName="YoutubeDownLoader/Loaders/YoutubeStreamDownloader.cs" Line="36" Column="56" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="YoutubeDownLoader" expanded="True" selected="True">
+          <Node name="YoutubeDownLoader" expanded="True">
             <Node name="YoutubeDownLoader" expanded="True">
-              <Node name="Constants" expanded="True" />
-              <Node name="Loaders" expanded="True" />
-              <Node name="Utilities" expanded="True" />
+              <Node name="Loaders" expanded="True">
+                <Node name="YoutubeLoader.cs" selected="True" />
+              </Node>
             </Node>
           </Node>
         </State>
